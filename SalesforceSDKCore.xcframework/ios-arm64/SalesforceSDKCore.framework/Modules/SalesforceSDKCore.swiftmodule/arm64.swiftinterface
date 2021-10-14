@@ -1,0 +1,198 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name SalesforceSDKCore
+import Combine
+import CryptoKit
+import Foundation
+import LocalAuthentication
+import SalesforceSDKCommon
+@_exported import SalesforceSDKCore
+import Swift
+import SwiftUI
+import UIKit
+import _Concurrency
+@_inheritsConvenienceInitializers @objc(SFSDKKeyValueEncryptedFileStoreViewController) public class KeyValueEncryptedFileStoreViewController : ObjectiveC.NSObject {
+  @objc public func createUI() -> UIKit.UIViewController
+  @objc override dynamic public init()
+  @objc deinit
+}
+public enum RestClientError : Swift.Error {
+  case apiResponseIsEmpty
+  case apiFailed(response: Any?, underlyingError: Swift.Error, urlResponse: Foundation.URLResponse?)
+  case decodingFailed(underlyingError: Swift.Error)
+  case jsonSerialization(underlyingError: Swift.Error)
+}
+public struct RestResponse {
+  public var urlResponse: Foundation.URLResponse {
+    get
+  }
+  public init(data: Foundation.Data, urlResponse: Foundation.URLResponse)
+  public func asJson() throws -> Any
+  public func asData() -> Foundation.Data
+  public func asString() -> Swift.String
+  public func asDecodable<T>(type: T.Type, decoder: Foundation.JSONDecoder = .init()) throws -> T where T : Swift.Decodable
+}
+extension SalesforceSDKCore.RestRequest {
+  public var isQueryRequest: Swift.Bool {
+    get
+  }
+}
+extension SalesforceSDKCore.RestClient {
+  public struct QueryResponse<Record> : Swift.Decodable where Record : Swift.Decodable {
+    public init(from decoder: Swift.Decoder) throws
+  }
+  public func send(request: SalesforceSDKCore.RestRequest, _ completionBlock: @escaping (Swift.Result<SalesforceSDKCore.RestResponse, SalesforceSDKCore.RestClientError>) -> Swift.Void)
+  public func send(compositeRequest: SalesforceSDKCore.CompositeRequest, _ completionBlock: @escaping (Swift.Result<SalesforceSDKCore.CompositeResponse, SalesforceSDKCore.RestClientError>) -> Swift.Void)
+  public func send(batchRequest: SalesforceSDKCore.BatchRequest, _ completionBlock: @escaping (Swift.Result<SalesforceSDKCore.BatchResponse, SalesforceSDKCore.RestClientError>) -> Swift.Void)
+  public func fetchRecords<Record>(ofModelType modelType: Record.Type, forRequest request: SalesforceSDKCore.RestRequest, withDecoder decoder: Foundation.JSONDecoder = .init(), _ completionBlock: @escaping (Swift.Result<SalesforceSDKCore.RestClient.QueryResponse<Record>, SalesforceSDKCore.RestClientError>) -> Swift.Void) where Record : Swift.Decodable
+  public func fetchRecords<Record>(ofModelType modelType: Record.Type, forQuery query: Swift.String, withApiVersion version: Swift.String = SFRestDefaultAPIVersion, withDecoder decoder: Foundation.JSONDecoder = .init(), _ completionBlock: @escaping (Swift.Result<SalesforceSDKCore.RestClient.QueryResponse<Record>, SalesforceSDKCore.RestClientError>) -> Swift.Void) where Record : Swift.Decodable
+}
+extension SalesforceSDKCore.RestClient {
+  public func publisher(for request: SalesforceSDKCore.RestRequest) -> Combine.Future<SalesforceSDKCore.RestResponse, SalesforceSDKCore.RestClientError>
+  public func publisher(for request: SalesforceSDKCore.CompositeRequest) -> Combine.Future<SalesforceSDKCore.CompositeResponse, SalesforceSDKCore.RestClientError>
+  public func publisher(for request: SalesforceSDKCore.BatchRequest) -> Combine.Future<SalesforceSDKCore.BatchResponse, SalesforceSDKCore.RestClientError>
+  public func records<Record>(forRequest request: SalesforceSDKCore.RestRequest, withDecoder decoder: Foundation.JSONDecoder = .init()) -> Combine.AnyPublisher<SalesforceSDKCore.RestClient.QueryResponse<Record>, Swift.Never> where Record : Swift.Decodable
+  public func records<Record>(forQuery query: Swift.String, withApiVersion version: Swift.String = SFRestDefaultAPIVersion, withDecoder decoder: Foundation.JSONDecoder = .init()) -> Combine.AnyPublisher<SalesforceSDKCore.RestClient.QueryResponse<Record>, Swift.Never> where Record : Swift.Decodable
+}
+@_hasMissingDesignatedInitializers @objc(SFSDKKeyValueEncryptedFileStore) public class KeyValueEncryptedFileStore : ObjectiveC.NSObject {
+  @objc(storeDirectory) final public let directory: Foundation.URL
+  @objc(storeName) final public let name: Swift.String
+  @objc public var storeVersion: Swift.Int {
+    get
+  }
+  @objc public static let maxStoreNameLength: Swift.Int
+  @available(*, deprecated, renamed: "init(parentDirectory:name:)")
+  @objc convenience public init?(parentDirectory: Swift.String, name: Swift.String, encryptionKey: SalesforceSDKCore.SFEncryptionKey)
+  @objc convenience public init?(parentDirectory: Swift.String, name: Swift.String)
+  @objc(sharedStoreWithName:) public static func shared(withName name: Swift.String) -> SalesforceSDKCore.KeyValueEncryptedFileStore?
+  @objc(sharedStoreWithName:user:) public static func shared(withName name: Swift.String, forUserAccount user: SalesforceSDKCore.UserAccount) -> SalesforceSDKCore.KeyValueEncryptedFileStore?
+  @objc(sharedGlobalStoreWithName:) public static func sharedGlobal(withName name: Swift.String) -> SalesforceSDKCore.KeyValueEncryptedFileStore?
+  @objc(allStoreNames) public static func allNames() -> [Swift.String]
+  @objc(allStoreNamesForUser:) public static func allNames(forUserAccount user: SalesforceSDKCore.UserAccount) -> [Swift.String]
+  @objc(allGlobalStoreNames) public static func allGlobalNames() -> [Swift.String]
+  @objc(removeSharedStoreWithName:) public static func removeShared(withName name: Swift.String)
+  @objc(removeSharedStoreWithName:forUser:) public static func removeShared(withName name: Swift.String, forUserAccount user: SalesforceSDKCore.UserAccount)
+  @objc(removeSharedGlobalStoreWithName:) public static func removeSharedGlobal(withName name: Swift.String)
+  @objc(removeAllStores) public static func removeAllForCurrentUser()
+  @objc(removeAllStoresForUser:) public static func removeAll(forUserAccount user: SalesforceSDKCore.UserAccount)
+  @objc(removeAllGlobalStores) public static func removeAllGlobal()
+  @objc(isValidStoreName:) public static func isValidName(_ name: Swift.String) -> Swift.Bool
+  @discardableResult
+  @objc public func saveValue(_ value: Swift.String, forKey key: Swift.String) -> Swift.Bool
+  @objc public subscript(key: Swift.String) -> Swift.String? {
+    @objc get
+    @objc set
+  }
+  @discardableResult
+  @objc public func removeValue(forKey key: Swift.String) -> Swift.Bool
+  @objc public func removeAll()
+  @objc public func allKeys() -> [Swift.String]?
+  @objc public func count() -> Swift.Int
+  @objc public func isEmpty() -> Swift.Bool
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(SFSDKDecryptStream) public class DecryptStream : Foundation.InputStream {
+  @objc override dynamic public var streamStatus: Foundation.Stream.Status {
+    @objc get
+  }
+  @objc override dynamic public var hasBytesAvailable: Swift.Bool {
+    @objc get
+  }
+  @objc override dynamic public init(data: Foundation.Data)
+  @objc override dynamic public init?(url: Foundation.URL)
+  @objc convenience dynamic public init?(fileAtPath path: Swift.String)
+  @available(swift, obsoleted: 1.0)
+  @objc(setupEncryptionKey:) public func setupEncryptionKey(key: Foundation.Data)
+  public func setupEncryptionKey(key: CryptoKit.SymmetricKey)
+  @objc override dynamic public func open()
+  @objc override dynamic public func read(_ buffer: Swift.UnsafeMutablePointer<Swift.UInt8>, maxLength len: Swift.Int) -> Swift.Int
+  @objc override dynamic public func property(forKey key: Foundation.Stream.PropertyKey) -> Any?
+  @objc override dynamic public func getBuffer(_ buffer: Swift.UnsafeMutablePointer<Swift.UnsafeMutablePointer<Swift.UInt8>?>, length len: Swift.UnsafeMutablePointer<Swift.Int>) -> Swift.Bool
+  @objc override dynamic public func close()
+  @objc deinit
+}
+public enum PushNotificationManagerError : Swift.Error {
+  case registrationFailed
+  case currentUserNotDetected
+  public static func == (a: SalesforceSDKCore.PushNotificationManagerError, b: SalesforceSDKCore.PushNotificationManagerError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension SalesforceSDKCore.PushNotificationManager {
+  public func registerForSalesforceNotifications(_ completionBlock: @escaping (Swift.Result<Swift.Bool, SalesforceSDKCore.PushNotificationManagerError>) -> ())
+  public func registerForSalesforceNotifications(user: SalesforceSDKCore.UserAccount, completionBlock: @escaping (Swift.Result<Swift.Bool, SalesforceSDKCore.PushNotificationManagerError>) -> ())
+  public func unregisterForSalesforceNotifications(_ completionBlock: @escaping (Swift.Bool) -> ())
+  public func unregisterForSalesforceNotifications(user: SalesforceSDKCore.UserAccount, _ completionBlock: @escaping (Swift.Bool) -> ())
+}
+public enum UserAccountManagerError : Swift.Error {
+  case loginFailed(underlyingError: Swift.Error, authInfo: SalesforceSDKCore.AuthInfo)
+  case loginJWTFailed(underlyingError: Swift.Error, authInfo: SalesforceSDKCore.AuthInfo)
+  case refreshFailed(underlyingError: Swift.Error, authInfo: SalesforceSDKCore.AuthInfo)
+  case userSwitchFailed(underlyingError: Swift.Error)
+  case userSwitchFailedUnknown
+}
+extension SalesforceSDKCore.UserAccountManager {
+  public func login(_ completionBlock: @escaping (Swift.Result<(SalesforceSDKCore.UserAccount, SalesforceSDKCore.AuthInfo), SalesforceSDKCore.UserAccountManagerError>) -> Swift.Void) -> Swift.Bool
+  public func login(using jwt: Swift.String, _ completionBlock: @escaping (Swift.Result<(SalesforceSDKCore.UserAccount, SalesforceSDKCore.AuthInfo), SalesforceSDKCore.UserAccountManagerError>) -> Swift.Void) -> Swift.Bool
+  public func refresh(credentials: SalesforceSDKCore.OAuthCredentials, _ completionBlock: @escaping (Swift.Result<(SalesforceSDKCore.UserAccount, SalesforceSDKCore.AuthInfo), SalesforceSDKCore.UserAccountManagerError>) -> Swift.Void) -> Swift.Bool
+  public func switchToNewUserAccount(_ completionBlock: @escaping (Swift.Result<SalesforceSDKCore.UserAccount, SalesforceSDKCore.UserAccountManagerError>) -> Swift.Void)
+}
+@_inheritsConvenienceInitializers @objc(SFSDKEncryptor) public class Encryptor : ObjectiveC.NSObject {
+  @available(*, deprecated, renamed: "encrypt(data:key:)")
+  @available(swift, obsoleted: 1.0)
+  @objc public static func encrypt(data: Foundation.Data, using key: Foundation.Data) throws -> Foundation.Data
+  @available(swift, obsoleted: 1.0)
+  @objc(encryptData:key:error:) public static func encrypt(data: Foundation.Data, key: Foundation.Data?) throws -> Foundation.Data
+  public static func encrypt(data: Foundation.Data, using key: CryptoKit.SymmetricKey) throws -> Foundation.Data
+  @available(*, deprecated, renamed: "decrypt(data:key:)")
+  @available(swift, obsoleted: 1.0)
+  @objc public static func decrypt(data: Foundation.Data, using key: Foundation.Data) throws -> Foundation.Data
+  @available(swift, obsoleted: 1.0)
+  @objc(decryptData:key:error:) public static func decrypt(data: Foundation.Data, key: Foundation.Data?) throws -> Foundation.Data
+  public static func decrypt(data: Foundation.Data, using key: CryptoKit.SymmetricKey) throws -> Foundation.Data
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(SFSDKKeyGenerator) public class KeyGenerator : ObjectiveC.NSObject {
+  @available(swift, obsoleted: 1.0)
+  @objc public static func encryptionKey(for label: Swift.String) throws -> Foundation.Data
+  public static func encryptionKey(for label: Swift.String) throws -> CryptoKit.SymmetricKey
+  @discardableResult
+  @objc public static func removeEncryptionKey(for label: Swift.String) -> Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(SFSDKEncryptStream) public class EncryptStream : Foundation.OutputStream {
+  @objc override dynamic public var streamStatus: Foundation.Stream.Status {
+    @objc get
+  }
+  @objc override dynamic public var hasSpaceAvailable: Swift.Bool {
+    @objc get
+  }
+  @objc override dynamic public init(toMemory: ())
+  @objc override dynamic public init(toBuffer buffer: Swift.UnsafeMutablePointer<Swift.UInt8>, capacity: Swift.Int)
+  @objc override dynamic public init?(url: Foundation.URL, append shouldAppend: Swift.Bool)
+  @objc convenience dynamic public init?(toFileAtPath path: Swift.String, append shouldAppend: Swift.Bool)
+  @available(swift, obsoleted: 1.0)
+  @objc(setupEncryptionKey:) public func setupEncryptionKey(key: Foundation.Data)
+  public func setupEncryptionKey(key: CryptoKit.SymmetricKey)
+  @objc override dynamic public func property(forKey key: Foundation.Stream.PropertyKey) -> Any?
+  @objc override dynamic public func open()
+  @objc override dynamic public func write(_ buffer: Swift.UnsafePointer<Swift.UInt8>, maxLength len: Swift.Int) -> Swift.Int
+  @objc override dynamic public func close()
+  @objc deinit
+}
+public typealias ScreenLockCallbackBlock = () -> Swift.Void
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(SFScreenLockManager) public class ScreenLockManager : ObjectiveC.NSObject {
+  @objc public static let shared: SalesforceSDKCore.ScreenLockManager
+  @objc public func handleAppForeground()
+  @objc public func storeMobilePolicy(userAccount: SalesforceSDKCore.UserAccount, hasMobilePolicy: Swift.Bool)
+  @objc public func setCallbackBlock(screenLockCallbackBlock: @escaping SalesforceSDKCore.ScreenLockCallbackBlock)
+  @objc public func checkForScreenLockUsers()
+  @objc public func upgradePasscode()
+  @objc deinit
+}
+extension SalesforceSDKCore.PushNotificationManagerError : Swift.Equatable {}
+extension SalesforceSDKCore.PushNotificationManagerError : Swift.Hashable {}

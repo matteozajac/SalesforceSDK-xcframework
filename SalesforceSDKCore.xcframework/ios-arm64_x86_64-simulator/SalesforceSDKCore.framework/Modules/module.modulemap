@@ -1,0 +1,11 @@
+framework module SalesforceSDKCore {
+  umbrella header "SalesforceSDKCore.h"
+
+  export *
+  module * { export * }
+}
+
+module SalesforceSDKCore.Swift {
+    header "SalesforceSDKCore-Swift.h"
+    requires objc
+}

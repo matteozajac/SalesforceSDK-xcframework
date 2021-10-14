@@ -1,0 +1,41 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.5 (swiftlang-1300.0.31.1 clang-1300.0.29.1)
+// swift-module-flags: -target x86_64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name SalesforceSDKCommon
+import Foundation
+@_exported import SalesforceSDKCommon
+import Swift
+import _Concurrency
+@_hasMissingDesignatedInitializers @objc(SFSDKKeychainResult) public class KeychainResult : ObjectiveC.NSObject {
+  @objc final public let success: Swift.Bool
+  @objc final public let status: Darwin.OSStatus
+  @objc final public let data: Foundation.Data?
+  @objc final public let error: Foundation.NSError?
+  @objc deinit
+}
+@objc public enum KeychainItemAccessibility : Swift.Int {
+  case whenUnlocked
+  case whenUnlockedThisDeviceOnly
+  case afterFirstUnlock
+  case afterFirstUnlockThisDeviceOnly
+  case whenPasscodeSetThisDeviceOnly
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_inheritsConvenienceInitializers @objc(SFSDKKeychainHelper) public class KeychainHelper : ObjectiveC.NSObject {
+  @objc public class func read(service: Swift.String, account: Swift.String?) -> SalesforceSDKCommon.KeychainResult
+  @objc public class func createIfNotPresent(service: Swift.String, account: Swift.String?) -> SalesforceSDKCommon.KeychainResult
+  @objc public class func write(service: Swift.String, data: Foundation.Data, account: Swift.String?) -> SalesforceSDKCommon.KeychainResult
+  @objc public class func reset(service: Swift.String, account: Swift.String?) -> SalesforceSDKCommon.KeychainResult
+  @objc public class func remove(service: Swift.String, account: Swift.String?) -> SalesforceSDKCommon.KeychainResult
+  @objc public class func removeAll() -> SalesforceSDKCommon.KeychainResult
+  @objc public class func setAccessibleAttribute(_ secAttrAccessible: SalesforceSDKCommon.KeychainItemAccessibility) -> SalesforceSDKCommon.KeychainResult
+  @objc public class func clearCaches()
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension SalesforceSDKCommon.KeychainItemAccessibility : Swift.Equatable {}
+extension SalesforceSDKCommon.KeychainItemAccessibility : Swift.Hashable {}
+extension SalesforceSDKCommon.KeychainItemAccessibility : Swift.RawRepresentable {}

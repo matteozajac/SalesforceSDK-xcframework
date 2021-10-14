@@ -1,0 +1,11 @@
+framework module SalesforceSDKCommon {
+  umbrella header "SalesforceSDKCommon.h"
+
+  export *
+  module * { export * }
+}
+
+module SalesforceSDKCommon.Swift {
+    header "SalesforceSDKCommon-Swift.h"
+    requires objc
+}
